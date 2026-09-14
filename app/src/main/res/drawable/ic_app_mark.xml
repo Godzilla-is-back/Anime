@@ -1,0 +1,74 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp"
+    android:height="108dp"
+    android:viewportWidth="108"
+    android:viewportHeight="108">
+
+    <!-- Rising Sun Disk -->
+    <path
+        android:fillColor="#BA2626"
+        android:strokeColor="#F5EEDC"
+        android:strokeWidth="1.8"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:pathData="M 58,26
+            A 16,16 0 1,1 57.99,26 Z" />
+
+    <!-- Cloud Solid Base Fill (masks out the sun behind the cloud) -->
+    <path
+        android:fillColor="#090C14"
+        android:pathData="M 31,63
+            C 23,61 21,52 23,46
+            C 25,40 31,37 34,40
+            C 33,32 40,29 46,33
+            C 49,27 59,26 64,32
+            C 69,29 76,33 76,39
+            C 81,38 88,38 88,42
+            C 86,47 79,51 77,54
+            C 76,61 68,64 61,61
+            C 58,65 48,66 43,62
+            C 39,65 33,65 31,63 Z" />
+
+    <!-- Cloud Outer Contour Outline -->
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="#F5EEDC"
+        android:strokeWidth="2.2"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:pathData="M 31,63
+            C 23,61 21,52 23,46
+            C 25,40 31,37 34,40
+            C 33,32 40,29 46,33
+            C 49,27 59,26 64,32
+            C 69,29 76,33 76,39
+            C 81,38 88,38 88,42
+            C 86,47 79,51 77,54
+            C 76,61 68,64 61,61
+            C 58,65 48,66 43,62
+            C 39,65 33,65 31,63 Z" />
+
+    <!-- Left Interior Cloud Swirl/Curl -->
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="#F5EEDC"
+        android:strokeWidth="1.9"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:pathData="M 34,40
+            C 38,44 42,47 39,52
+            C 36,55 31,52 33,48
+            C 34,45 38,46 38,48" />
+
+    <!-- Bottom Interior Cloud Swirl/Curl -->
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="#F5EEDC"
+        android:strokeWidth="1.8"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:pathData="M 61,61
+            C 58,56 59,51 64,49
+            C 68,48 70,52 68,55
+            C 66,57 63,56 63,54" />
+</vector>

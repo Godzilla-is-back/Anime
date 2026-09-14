@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <!-- Background Gradient for Icon -->
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#121722"/>
+      <stop offset="60%" stop-color="#0A0D14"/>
+      <stop offset="100%" stop-color="#05070B"/>
+    </linearGradient>
+  </defs>
+  <!-- Background circle/canvas -->
+  <rect width="512" height="512" rx="100" fill="url(#bgGrad)" />
+
+  <g transform="translate(256, 230)">
+    <!-- Sun -->
+    <!-- Sun Outer Rim -->
+    <circle cx="46" cy="-45" r="92" fill="#B71C1C" stroke="#F5EEDC" stroke-width="9" />
+    
+    <!-- Cloud Background Fill (to block out sun behind it) -->
+    <path d="M -160,50 
+             C -190,50 -205,25 -205,-5
+             C -205,-35 -185,-58 -155,-60
+             C -150,-95 -125,-125 -85,-130
+             C -55,-133 -30,-115 -18,-95
+             C -5,-120 25,-128 55,-122
+             C 85,-116 105,-90 108,-65
+             C 125,-60 145,-40 145,-15
+             C 170,-10 205,-2 230,-22
+             C 210,12 180,30 145,32
+             C 130,58 100,75 65,72
+             C 45,70 30,62 20,50
+             C 5,68 -20,78 -50,75
+             C -80,72 -100,60 -115,48
+             C -130,55 -145,52 -160,50 Z" 
+          fill="#0A0D14" />
+
+    <!-- Cloud Outline and Swirls -->
+    <path d="M -160,50 
+             C -190,50 -205,25 -205,-5
+             C -205,-35 -185,-58 -155,-60
+             C -150,-95 -125,-125 -85,-130
+             C -55,-133 -30,-115 -18,-95
+             C -5,-120 25,-128 55,-122
+             C 85,-116 105,-90 108,-65
+             C 125,-60 145,-40 145,-15
+             C 170,-10 205,-2 230,-22
+             C 210,12 180,30 145,32
+             C 130,58 100,75 65,72
+             C 45,70 30,62 20,50
+             C 5,68 -20,78 -50,75
+             C -80,72 -100,60 -115,48
+             C -130,55 -145,52 -160,50 Z" 
+          fill="none" stroke="#F5EEDC" stroke-width="11" stroke-linejoin="round" stroke-linecap="round" />
+
+    <!-- Left inner swirl -->
+    <path d="M -155,-60 
+             C -135,-50 -120,-30 -125,-5
+             C -130,15 -150,15 -155,0
+             C -158,-12 -148,-20 -138,-18" 
+          fill="none" stroke="#F5EEDC" stroke-width="10" stroke-linecap="round" />
+
+    <!-- Bottom inner swirl -->
+    <path d="M 20,50 
+             C 10,35 15,15 32,10
+             C 48,5 58,20 50,35
+             C 45,45 35,42 32,35" 
+          fill="none" stroke="#F5EEDC" stroke-width="9" stroke-linecap="round" />
+  </g>
+</svg>

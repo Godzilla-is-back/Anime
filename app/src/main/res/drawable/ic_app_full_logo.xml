@@ -1,0 +1,125 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="240dp"
+    android:height="240dp"
+    android:viewportWidth="240"
+    android:viewportHeight="240">
+
+    <!-- Rising Sun Disk -->
+    <path
+        android:fillColor="#BA2626"
+        android:strokeColor="#F5EEDC"
+        android:strokeWidth="3.6"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:pathData="M 129,52
+            A 35,35 0 1,1 128.9,52 Z" />
+
+    <!-- Cloud Solid Base Fill (masks out the sun) -->
+    <path
+        android:fillColor="#090C14"
+        android:pathData="M 68,138
+            C 51,134 47,114 51,101
+            C 55,88 68,81 75,88
+            C 73,70 88,64 101,73
+            C 108,60 130,57 141,70
+            C 152,64 167,73 167,86
+            C 178,84 194,84 194,92
+            C 190,103 174,112 170,119
+            C 167,134 150,141 134,134
+            C 128,143 106,145 95,136
+            C 86,143 73,143 68,138 Z" />
+
+    <!-- Cloud Outer Contour Outline -->
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="#F5EEDC"
+        android:strokeWidth="4.8"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:pathData="M 68,138
+            C 51,134 47,114 51,101
+            C 55,88 68,81 75,88
+            C 73,70 88,64 101,73
+            C 108,60 130,57 141,70
+            C 152,64 167,73 167,86
+            C 178,84 194,84 194,92
+            C 190,103 174,112 170,119
+            C 167,134 150,141 134,134
+            C 128,143 106,145 95,136
+            C 86,143 73,143 68,138 Z" />
+
+    <!-- Left Interior Cloud Swirl/Curl -->
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="#F5EEDC"
+        android:strokeWidth="4.2"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:pathData="M 75,88
+            C 84,97 92,103 86,114
+            C 79,121 68,114 73,106
+            C 75,99 84,101 84,106" />
+
+    <!-- Bottom Interior Cloud Swirl/Curl -->
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="#F5EEDC"
+        android:strokeWidth="3.9"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:pathData="M 134,134
+            C 128,123 130,112 141,108
+            C 150,106 154,114 150,121
+            C 145,125 139,123 139,119" />
+
+    <!-- Letter 'A' (ANI in Cream) -->
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="#F5EEDC"
+        android:strokeWidth="2.8"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:pathData="M 52,184 L 58,166 L 64,184 M 54,178 L 62,178" />
+
+    <!-- Letter 'N' -->
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="#F5EEDC"
+        android:strokeWidth="2.8"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:pathData="M 76,184 L 76,166 L 86,184 L 86,166" />
+
+    <!-- Letter 'I' -->
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="#F5EEDC"
+        android:strokeWidth="2.8"
+        android:strokeLineCap="round"
+        android:pathData="M 99,166 L 99,184" />
+
+    <!-- Letter 'H' (HUB in Crimson) -->
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="#BA2626"
+        android:strokeWidth="2.8"
+        android:strokeLineCap="round"
+        android:pathData="M 143,166 L 143,184 M 143,175 L 153,175 M 153,166 L 153,184" />
+
+    <!-- Letter 'U' -->
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="#BA2626"
+        android:strokeWidth="2.8"
+        android:strokeLineCap="round"
+        android:pathData="M 166,166 L 166,179 C 166,183 169,185 173,185 C 177,185 180,183 180,179 L 180,166" />
+
+    <!-- Letter 'B' -->
+    <path
+        android:fillColor="#00000000"
+        android:strokeColor="#BA2626"
+        android:strokeWidth="2.8"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:pathData="M 193,166 L 193,184 L 200,184 C 203,184 205,182 205,179.5 C 205,177 203,175 200,175 L 193,175 L 199,175 C 202,175 204,173 204,170.5 C 204,168 202,166 199,166 Z" />
+</vector>

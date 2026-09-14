@@ -1,0 +1,7 @@
+{
+  "name": "AniHub",
+  "description": "AniHub: Ultimate anime streaming with live server routing (Anikoto, AniDB), high-performance video player, and complete anime catalog.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
+
