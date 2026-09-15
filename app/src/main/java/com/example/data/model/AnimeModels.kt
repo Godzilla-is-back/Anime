@@ -39,20 +39,16 @@ enum class StreamServer(
     val pingMs: Int,
     val isDefault: Boolean = false
 ) {
-    KOTO("koto", "Koto FastCDN", "Koto", "ULTRA HD", 24, true),
-    NEKO("neko", "Neko Stream", "Neko", "1080p HD", 31),
-    GG("gg", "GG Server", "GG", "MIRROR", 45),
-    ANIDB("anidb", "AniDB Cloud", "AniDB", "STABLE", 34),
-    ANIKOTO("anikoto", "Anikoto FastCDN", "AniKoto", "ULTRA HD", 28),
-    ZOROCLOUD("zorocloud", "ZoroCloud VIP", "Zoro", "LOW PING", 42),
-    KAWAISTREAM("kawai", "KawaiStream", "Kawai", "BACKUP", 55),
-    GOGOSTREAM("gogo", "GogoStream Mirror", "Gogo", "MIRROR", 68)
+    KOTO("koto", "Koto", "Koto", "Anikoto FastCDN", 24, true),
+    NEKO("neko", "Neko", "Neko", "Anikoto 1080p", 31),
+    GG("gg", "GG", "GG", "Anikoto Mirror", 45)
 }
 
 enum class StreamQuality(val label: String, val resolution: String, val bitrate: String) {
     Q1080P("1080p", "1920x1080", "5.4 Mbps"),
     Q720P("720p", "1280x720", "2.8 Mbps"),
     Q480P("480p", "854x480", "1.2 Mbps"),
+    Q360P("360p", "640x360", "750 Kbps"),
     AUTO("Auto", "Adaptive", "Dynamic")
 }
 
@@ -74,7 +70,7 @@ enum class AppThemeMode(val id: String, val displayName: String, val subtitle: S
 
 data class AppSettings(
     val themeMode: AppThemeMode = AppThemeMode.SAKURA_OBSIDIAN,
-    val defaultServer: StreamServer = StreamServer.ANIKOTO,
+    val defaultServer: StreamServer = StreamServer.KOTO,
     val defaultQuality: StreamQuality = StreamQuality.Q1080P,
     val autoSkipIntro: Boolean = true,
     val autoPlayNext: Boolean = true,

@@ -13,6 +13,7 @@ import com.example.data.model.StreamQuality
 import com.example.data.model.StreamServer
 import com.example.data.model.UserProfile
 import com.example.data.remote.AnimeApiService
+import com.example.data.remote.AnimeStreamResolver
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -168,6 +169,7 @@ class AnimeRepository(private val animeDao: AnimeDao) {
     }
 
     suspend fun startDownload(anime: Anime, episode: Episode, server: StreamServer, quality: StreamQuality) {
+        val streamUrl = AnimeStreamResolver.resolveAccurateStreamUrl(anime, episode.episodeNum, server, quality)
         val entity = DownloadedEpisodeEntity(
             episodeId = episode.id,
             animeId = anime.id,
@@ -175,7 +177,7 @@ class AnimeRepository(private val animeDao: AnimeDao) {
             episodeTitle = episode.title,
             episodeNum = episode.episodeNum,
             coverUrl = anime.coverUrl,
-            videoUrl = episode.videoUrl,
+            videoUrl = streamUrl,
             serverName = server.displayName,
             quality = quality.label,
             fileSizeBytes = (220_000_000L..340_000_000L).random(),
@@ -187,11 +189,12 @@ class AnimeRepository(private val animeDao: AnimeDao) {
         // Asynchronously simulate download progress
         repositoryScope.launch {
             for (p in listOf(35, 60, 85, 100)) {
-                delay(600)
+                delay(400)
                 animeDao.insertDownload(
                     entity.copy(
                         progressPercent = p,
-                        isCompleted = (p == 100)
+                        isCompleted = (p == 100),
+                        videoUrl = streamUrl
                     )
                 )
             }
@@ -220,8 +223,8 @@ class AnimeRepository(private val animeDao: AnimeDao) {
                 episodeTitle = "Episode 1: I'm Used to It",
                 episodeNum = 1,
                 coverUrl = "https://images.unsplash.com/photo-1578632767115-351597cf2477?w=600&q=80",
-                videoUrl = "https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-720p.mp4",
-                serverName = "Anikoto FastCDN",
+                videoUrl = "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8",
+                serverName = "Anikoto Koto",
                 quality = "1080p",
                 fileSizeBytes = 284000000L,
                 isCompleted = true,
@@ -234,8 +237,8 @@ class AnimeRepository(private val animeDao: AnimeDao) {
                 episodeTitle = "Episode 1: The Journey's End",
                 episodeNum = 1,
                 coverUrl = "https://images.unsplash.com/photo-1534447677768-be436bb09401?w=600&q=80",
-                videoUrl = "https://storage.googleapis.com/exoplayer-test-media-0/BigBuckBunny_320x180.mp4",
-                serverName = "AniDB Cloud",
+                videoUrl = "https://cph-p2p-msl.akamaized.net/hls/live/2000341/test/master.m3u8",
+                serverName = "Anikoto Neko",
                 quality = "1080p",
                 fileSizeBytes = 312000000L,
                 isCompleted = true,
@@ -275,8 +278,8 @@ class AnimeRepository(private val animeDao: AnimeDao) {
                     episodeTitle = "Episode 1: I'm Used to It",
                     episodeNum = 1,
                     coverUrl = "https://images.unsplash.com/photo-1578632767115-351597cf2477?w=600&q=80",
-                    videoUrl = "https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-720p.mp4",
-                    serverName = "Anikoto FastCDN",
+                    videoUrl = "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8",
+                    serverName = "Anikoto Koto",
                     positionMs = 480000L, // 8 minutes
                     durationMs = 1440000L, // 24 minutes
                     userEmail = _currentUser.value.email
@@ -462,8 +465,14 @@ class AnimeRepository(private val animeDao: AnimeDao) {
         _isSyncing.value = true
         _syncStatusText.value = "Connecting to AniList & MyAnimeList..."
         try {
-            // 1. Fetch live latest releases
-            val latestResult = apiService.fetchLatestReleases(1, 12)
+            // 1. Fetch real-time latest releases from Anikoto server API (with AniList fallback)
+            _syncStatusText.value = "Connecting to Anikoto server & AniList..."
+            val anikotoLatestResult = apiService.fetchAnikotoLatestReleases()
+            val latestResult = if (anikotoLatestResult.isSuccess && anikotoLatestResult.getOrNull()?.isNotEmpty() == true) {
+                anikotoLatestResult
+            } else {
+                apiService.fetchLatestReleases(1, 12)
+            }
             val trendingResult = apiService.fetchTrendingAnime(1, 12)
             val topRatedResult = apiService.fetchTopRatedAnime(1, 12)
 

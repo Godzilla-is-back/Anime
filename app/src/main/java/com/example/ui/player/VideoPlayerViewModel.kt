@@ -10,6 +10,8 @@ import com.example.data.model.StreamServer
 import com.example.data.remote.AnimeStreamResolver
 import com.example.data.remote.ResolvedStream
 import com.example.data.remote.StreamResolutionState
+import com.example.data.remote.ServerCaptionProfile
+import com.example.data.remote.ServerQualityProfile
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -27,15 +29,20 @@ enum class VideoAspectRatioMode(val label: String) {
 data class VideoPlayerUiState(
     val anime: Anime? = null,
     val episode: Episode? = null,
-    val server: StreamServer = StreamServer.ANIKOTO,
+    val server: StreamServer = StreamServer.KOTO,
     val quality: StreamQuality = StreamQuality.Q1080P,
     val audioTrack: String = "Sub", // "Sub" or "Dub"
     val isPlaying: Boolean = false,
     val isBuffering: Boolean = true,
     val isLocked: Boolean = false,
     val isBiggerScreen: Boolean = false,
+    val isFullscreen: Boolean = false,
     val aspectRatioMode: VideoAspectRatioMode = VideoAspectRatioMode.FIT,
     val subtitlesEnabled: Boolean = true,
+    val selectedSubtitleLang: String = "English",
+    val availableSubtitles: List<String> = listOf("Off", "English", "Spanish", "French", "German", "Japanese"),
+    val availableQualities: List<ServerQualityProfile> = emptyList(),
+    val availableCaptions: List<ServerCaptionProfile> = emptyList(),
     val playbackSpeed: Float = 1.0f,
     val currentPositionMs: Long = 0L,
     val durationMs: Long = 1440000L,
@@ -89,7 +96,8 @@ class VideoPlayerViewModel(application: Application) : AndroidViewModel(applicat
                 anime = anime,
                 episodeNum = episode.episodeNum,
                 server = server,
-                quality = quality
+                quality = quality,
+                audioTrack = _uiState.value.audioTrack
             ).collect { state ->
                 when (state) {
                     is StreamResolutionState.Connecting -> {
@@ -102,6 +110,15 @@ class VideoPlayerViewModel(application: Application) : AndroidViewModel(applicat
                         }
                     }
                     is StreamResolutionState.QueryingServer -> {
+                        _uiState.update { current ->
+                            current.copy(
+                                resolutionState = state,
+                                isBuffering = true,
+                                connectionLogs = (current.connectionLogs + state.message).takeLast(6)
+                            )
+                        }
+                    }
+                    is StreamResolutionState.NegotiatingProfiles -> {
                         _uiState.update { current ->
                             current.copy(
                                 resolutionState = state,
@@ -123,6 +140,8 @@ class VideoPlayerViewModel(application: Application) : AndroidViewModel(applicat
                             current.copy(
                                 resolutionState = state,
                                 resolvedStream = state.stream,
+                                availableQualities = state.stream.availableQualities,
+                                availableCaptions = state.stream.availableCaptions,
                                 isBuffering = false,
                                 errorMessage = null,
                                 connectionLogs = (current.connectionLogs + "Connected to ${state.stream.serverNode} (${state.stream.latencyMs}ms)").takeLast(6)
@@ -198,6 +217,35 @@ class VideoPlayerViewModel(application: Application) : AndroidViewModel(applicat
 
     fun toggleSubtitles() {
         _uiState.update { it.copy(subtitlesEnabled = !it.subtitlesEnabled) }
+    }
+
+    fun selectSubtitleLang(lang: String) {
+        if (lang.equals("Off", ignoreCase = true)) {
+            _uiState.update { it.copy(subtitlesEnabled = false, selectedSubtitleLang = "Off") }
+        } else {
+            _uiState.update { it.copy(subtitlesEnabled = true, selectedSubtitleLang = lang) }
+        }
+    }
+
+    fun selectCaptionProfile(profile: ServerCaptionProfile) {
+        if (profile.code.equals("off", ignoreCase = true)) {
+            _uiState.update { it.copy(subtitlesEnabled = false, selectedSubtitleLang = "Off") }
+        } else {
+            _uiState.update {
+                it.copy(
+                    subtitlesEnabled = true,
+                    selectedSubtitleLang = profile.label,
+                    resolvedStream = it.resolvedStream?.copy(
+                        activeCaption = profile,
+                        subtitleUrl = profile.subtitleUrl
+                    )
+                )
+            }
+        }
+    }
+
+    fun toggleFullscreen() {
+        _uiState.update { it.copy(isFullscreen = !it.isFullscreen) }
     }
 
     fun toggleLock() {

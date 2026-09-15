@@ -174,32 +174,34 @@ fun SakuraMainApp(repository: AnimeRepository) {
                 val (anime, episode) = playingEpisodeInfo!!
                 val episodes = repository.getEpisodesForAnime(anime.id)
 
-                AnimePlayerScreen(
-                    anime = anime,
-                    episode = episode,
-                    allEpisodes = episodes,
-                    initialPositionMs = playingInitialPosition,
-                    initialServer = settings.defaultServer,
-                    initialQuality = settings.defaultQuality,
-                    onBack = {
-                        playingEpisodeInfo = null
-                        playingInitialPosition = 0L
-                    },
-                    onSelectEpisode = { newEp ->
-                        playingEpisodeInfo = anime to newEp
-                        playingInitialPosition = 0L
-                    },
-                    onDownloadEpisode = { ep, server, quality ->
-                        coroutineScope.launch {
-                            repository.startDownload(anime, ep, server, quality)
+                androidx.compose.runtime.key(anime.id, episode.id) {
+                    AnimePlayerScreen(
+                        anime = anime,
+                        episode = episode,
+                        allEpisodes = episodes,
+                        initialPositionMs = playingInitialPosition,
+                        initialServer = settings.defaultServer,
+                        initialQuality = settings.defaultQuality,
+                        onBack = {
+                            playingEpisodeInfo = null
+                            playingInitialPosition = 0L
+                        },
+                        onSelectEpisode = { newEp ->
+                            playingEpisodeInfo = anime to newEp
+                            playingInitialPosition = 0L
+                        },
+                        onDownloadEpisode = { ep, server, quality ->
+                            coroutineScope.launch {
+                                repository.startDownload(anime, ep, server, quality)
+                            }
+                        },
+                        onSaveProgress = { ep, pos, dur, server ->
+                            coroutineScope.launch {
+                                repository.saveWatchProgress(ep, anime, server, pos, dur)
+                            }
                         }
-                    },
-                    onSaveProgress = { ep, pos, dur, server ->
-                        coroutineScope.launch {
-                            repository.saveWatchProgress(ep, anime, server, pos, dur)
-                        }
-                    }
-                )
+                    )
+                }
             } else if (selectedAnime != null) {
                 // Detail Screen for chosen anime
                 val anime = selectedAnime!!

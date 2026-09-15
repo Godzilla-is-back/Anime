@@ -56,27 +56,20 @@ interface AniHubApiService {
     suspend fun getAnikotoStream(
         @Query("animeId") animeId: Int,
         @Query("episode") episodeNumber: Int,
+        @Query("server") server: String = "koto",
+        @Query("audio") audioTrack: String = "sub",
         @Query("quality") quality: String? = null
     ): Response<StreamResponseDto>
 
-    @GET("api/v1/anidb/stream")
-    suspend fun getAniDbStream(
+    @GET("api/v1/anikoto/captions")
+    suspend fun getAnikotoCaptions(
         @Query("animeId") animeId: Int,
-        @Query("episode") episodeNumber: Int,
-        @Query("quality") quality: String? = null
-    ): Response<StreamResponseDto>
+        @Query("episode") episodeNumber: Int
+    ): Response<List<SubtitleTrackDto>>
 
-    @GET("api/v1/stream/{server}")
-    suspend fun getStreamByServer(
-        @Path("server") server: String,
-        @Query("animeId") animeId: Int,
-        @Query("episode") episodeNumber: Int,
-        @Query("quality") quality: String? = null
-    ): Response<StreamResponseDto>
-
-    @GET("api/v1/anime/{animeId}/episodes")
+    @GET("api/v1/anikoto/episodes")
     suspend fun getAnimeEpisodes(
-        @Path("animeId") animeId: Int
+        @Query("animeId") animeId: Int
     ): Response<List<EpisodeStreamDto>>
 
     companion object {
