@@ -10,10 +10,14 @@ import java.util.concurrent.TimeUnit
 
 object NetworkClient {
     private const val ANIKOTO_API_BASE_URL = "https://anikototvapi.vercel.app/"
+    private const val SCRAPER_API_BASE_URL = "http://localhost:3000/" // Change to your backend URL
     private const val TAG = "NetworkClient"
     
     private var aniKotoRetrofit: Retrofit? = null
     private var aniKotoApiService: AniKotoApiService? = null
+    
+    private var scraperRetrofit: Retrofit? = null
+    private var scraperApiService: ScraperApiService? = null
     
     private fun getOkHttpClient(): OkHttpClient {
         return OkHttpClient.Builder()
@@ -46,6 +50,8 @@ object NetworkClient {
             .build()
     }
     
+    // ===================== ANIKOTO API =====================
+    
     fun getAniKotoApiService(): AniKotoApiService {
         if (aniKotoApiService == null) {
             if (aniKotoRetrofit == null) {
@@ -63,6 +69,48 @@ object NetworkClient {
     fun resetAniKotoService() {
         aniKotoApiService = null
         aniKotoRetrofit = null
+    }
+    
+    // ===================== SCRAPER BACKEND API =====================
+    
+    /**
+     * Get Scraper API Service for backend scraping
+     * Make sure your backend is running at SCRAPER_API_BASE_URL
+     */
+    fun getScraperApiService(): ScraperApiService {
+        if (scraperApiService == null) {
+            if (scraperRetrofit == null) {
+                scraperRetrofit = Retrofit.Builder()
+                    .baseUrl(SCRAPER_API_BASE_URL)
+                    .client(getOkHttpClient())
+                    .addConverterFactory(MoshiConverterFactory.create(getMoshi()))
+                    .build()
+            }
+            scraperApiService = scraperRetrofit!!.create(ScraperApiService::class.java)
+        }
+        return scraperApiService!!
+    }
+    
+    fun resetScraperService() {
+        scraperApiService = null
+        scraperRetrofit = null
+    }
+    
+    /**
+     * Change backend URL at runtime
+     */
+    fun setScraperBaseUrl(baseUrl: String) {
+        Log.d(TAG, "Changing scraper base URL to: $baseUrl")
+        scraperApiService = null
+        scraperRetrofit = null
+        
+        scraperRetrofit = Retrofit.Builder()
+            .baseUrl(baseUrl)
+            .client(getOkHttpClient())
+            .addConverterFactory(MoshiConverterFactory.create(getMoshi()))
+            .build()
+        
+        scraperApiService = scraperRetrofit!!.create(ScraperApiService::class.java)
     }
 }
 
