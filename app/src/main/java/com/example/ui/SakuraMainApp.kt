@@ -38,12 +38,14 @@ import androidx.compose.material.icons.filled.Download
 import androidx.compose.material.icons.filled.Home
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.outlined.BookmarkBorder
 import androidx.compose.material.icons.outlined.CalendarMonth
 import androidx.compose.material.icons.outlined.Download
 import androidx.compose.material.icons.outlined.Home
 import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material.icons.outlined.Settings
+import androidx.compose.material.icons.outlined.PlayArrow
 import androidx.compose.material3.Badge
 import androidx.compose.material3.BadgedBox
 import androidx.compose.material3.Icon
@@ -75,6 +77,7 @@ import com.example.data.model.Episode
 import com.example.data.model.StreamQuality
 import com.example.data.model.StreamServer
 import com.example.data.repository.AnimeRepository
+import com.example.data.remote.AniKotoRepository
 import com.example.ui.components.PressableScale
 import com.example.ui.player.AnimePlayerScreen
 import com.example.ui.screens.DetailScreen
@@ -87,6 +90,7 @@ import com.example.ui.screens.SearchScreen
 import com.example.ui.screens.SettingsScreen
 import com.example.ui.screens.SplashScreen
 import com.example.ui.screens.WatchlistScreen
+import com.example.ui.screens.AniKotoStreamingScreen
 import com.example.ui.theme.SakuraGlintAqua
 import com.example.ui.theme.SakuraLightPink
 import com.example.ui.theme.SakuraPinkGlow
@@ -99,6 +103,7 @@ enum class MainTab(val id: String, val title: String, val activeIcon: ImageVecto
     HOME("home", "Home", Icons.Filled.Home, Icons.Outlined.Home),
     SCHEDULE("schedule", "Schedule", Icons.Filled.CalendarMonth, Icons.Outlined.CalendarMonth),
     SEARCH("search", "Search", Icons.Filled.Search, Icons.Outlined.Search),
+    ANIKOTO("anikoto", "AniKoto", Icons.Filled.PlayArrow, Icons.Outlined.PlayArrow),
     WATCHLIST("watchlist", "My List", Icons.Filled.Bookmark, Icons.Outlined.BookmarkBorder),
     DOWNLOADS("downloads", "Offline", Icons.Filled.Download, Icons.Outlined.Download),
     SETTINGS("settings", "Settings", Icons.Filled.Settings, Icons.Outlined.Settings)
@@ -107,6 +112,7 @@ enum class MainTab(val id: String, val title: String, val activeIcon: ImageVecto
 @Composable
 fun SakuraMainApp(repository: AnimeRepository) {
     val coroutineScope = rememberCoroutineScope()
+    val aniKotoRepository = remember { AniKotoRepository() }
 
     // Pre-seed initial data on startup
     LaunchedEffect(Unit) {
@@ -344,6 +350,12 @@ fun SakuraMainApp(repository: AnimeRepository) {
                                         onSearchOnline = { query ->
                                             repository.searchLiveAnime(query)
                                         }
+                                    )
+                                }
+
+                                MainTab.ANIKOTO -> {
+                                    AniKotoStreamingScreen(
+                                        aniKotoRepository = aniKotoRepository
                                     )
                                 }
 
